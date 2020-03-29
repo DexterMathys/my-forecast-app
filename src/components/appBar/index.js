@@ -31,9 +31,12 @@ class IAppBar extends Component {
      * Function for update the unit and request to Open Weather Map
      */
     onChangeUnit = async event => {
-        await this.props.onHandleChangeUnit(event)
+        await this.props.onHandleChangeUnit(event);
 
-        this.onChangeSelection(this.state.text);
+        if (this.state.text.trim() !== '') {
+            this.onChangeSelection(this.state.text);
+        }
+
     }
 
     render() {
