@@ -6,32 +6,48 @@ class IAppBar extends Component {
         text: ''
     }
 
+    /*
+     * Function for update the text of the searh box
+     */
     onChangeText = text => {
         this.setState({text});
-
-        // this.props.findSuggestions(text);
     }
 
-    onChangeSelection = text => {
+    /*
+     * Functino for request to Open Weather Map and save the suggestion
+     */
+    onChangeSelection = async text => {
         this.setState({text});
 
-        const data = this.props.getWeather(text);
+        const data = await this.props.getWeather(text);
         
+        // if 200 OK save the suggestion
         if (data.cod === 200) {
             this.props.saveSuggestion(text);
         }
     }
 
+    /*
+     * Function for update the unit and request to Open Weather Map
+     */
+    onChangeUnit = async event => {
+        await this.props.onHandleChangeUnit(event)
+
+        this.onChangeSelection(this.state.text);
+    }
+
     render() {
         const { text } = this.state;
-        const { suggestions } = this.props;
+        const { unit, suggestions } = this.props;
 
         return (
             <Page 
                 text={text}
+                unit={unit}
                 suggestions={suggestions}
                 onChangeText={this.onChangeText}
                 onChangeSelection={this.onChangeSelection}
+                onHandleChangeUnit={this.onChangeUnit}
             />
         );
     }
